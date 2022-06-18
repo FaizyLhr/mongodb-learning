@@ -1,0 +1,5 @@
+net start MongoDB
+
+net stop MongoDB
+
+“C:\MongoDB\mongod.exe” — remove

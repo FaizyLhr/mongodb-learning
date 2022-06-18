@@ -1,0 +1,24 @@
+const mongoose = require("mongoose");
+
+mongoose
+	.connect("mongodb://localhost:27017/test", {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	})
+	.then(() => console.log("Connection Successful"))
+	.catch((err) => console.log(err));
+
+//Schema Creation
+const StorySchema = new Schema({
+	_creator: {
+		type: Schema.ObjectId,
+		ref: "Person",
+	},
+	title: String,
+	fans: [{ type: Schema.ObjectId, ref: "Person" }],
+});
+
+//Model creation
+const Story = mongoose.model("Story", StorySchema);
+
+ 

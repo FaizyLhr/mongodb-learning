@@ -1,0 +1,10 @@
+const Model1 //Author
+const Model2 //Story
+
+Model2
+    .findOne({(Model2.attribute):"attValue"})
+    .populate("(Model1.attribute)")
+    .exec((err,model2)=>{
+        if(err) return handleError(err);
+        console.log('The author is %s', model2.(Model1.attribute).(Model1.attribute.atrName));
+    })

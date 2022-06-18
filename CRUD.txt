@@ -1,0 +1,112 @@
+MONGO CRUD
+
+//clear Screen
+cls
+
+INSERT
+
+//creation
+db.inventory.insertOne(
+   { item: "canvas", qty: 100, tags: ["cotton"], size: { h: 28, w: 35.5, uom: "cm" } }
+)uom
+
+//check entry
+db.inventory.find( { item: "canvas" } )
+
+//insert multiple
+db.inventory.insertMany([
+   { item: "journal", qty: 25, tags: ["blank", "red"], size: { h: 14, w: 21, uom: "cm" } },
+   { item: "mat", qty: 85, tags: ["gray"], size: { h: 27.9, w: 35.5, uom: "cm" } },
+   { item: "mousepad", qty: 25, tags: ["gel", "blue"], size: { h: 19, w: 22.85, uom: "cm" } }
+])
+
+//see all
+db.inventory.find( {} )
+
+QUERY
+
+//select all
+{}
+
+//select by condition
+{ <field1>: <value1>, ... }
+e.g { status: "D" }
+
+//select using operator
+{ <field1>: { <operator1>: <value1> }, ... }
+e.g. { status: { $in: [ "A", "D" ] } }
+
+//using AND 
+{ status: "A", qty: { $lt: 30 } }
+
+//using OR Operator
+{ $or: [ { status: "A" }, { qty: { $lt: 30 } } ] }
+
+//Apply And and OR simultaneously
+{ status: "A", $or: [ { qty: { $lt: 30 } }, { item: /^p/ } ] }
+
+NESTED query
+//select nested
+{ size: { h: 14, w: 21, uom: "cm" } }
+
+// Specify Equality Match on a Nested Field
+{ "size.uom": "in" }
+
+// Specify Match using Query Operator
+{ "size.h": { $lt: 15 } }
+
+// Specify AND Condition
+{ "size.h": { $lt: 15 }, "size.uom": "in", status: "D" }
+
+QUERY ARRAY
+// match exactly
+db.inventory.find( { tags: ["red", "blank"] } )
+
+// match contain
+db.inventory.find( { tags: { $all: ["red", "blank"] } } )
+
+// contain atleast one item
+db.inventory.find( { tags: "red" } )
+
+UPDATE
+
+//multiple doc update
+{
+  <update operator>: { <field1>: <value1>, ... },
+  <update operator>: { <field2>: <value2>, ... },
+  ...
+}
+
+//single doc update
+db.inventory.updateOne(
+   { item: "paper" },
+   {
+     $set: { "size.uom": "cm", status: "P" },
+     $currentDate: { lastModified: true }
+   }
+)
+
+//single doc update many
+db.inventory.updateMany(
+   { "qty": { $lt: 50 } },
+   {
+     $set: { "size.uom": "in", status: "P" },
+     $currentDate: { lastModified: true }
+   }
+)
+
+// replace single entity
+db.inventory.replaceOne(
+   { item: "paper" },
+   { item: "paper", instock: [ { warehouse: "A", qty: 60 }, { warehouse: "B", qty: 40 } ] }
+)
+
+DELETE
+
+// del one
+db.inventory.deleteOne( { status: "D" } )
+
+// del multiple
+{ <field1>: <value1>, ... }
+// for nested { <field1>: { <operator1>: <value1> }, ... }
+e.g db.inventory.deleteMany({ status : "A" })

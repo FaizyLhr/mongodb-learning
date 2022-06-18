@@ -1,0 +1,45 @@
+db
+
+use dbname(example)
+
+db.myNewCollection2.insertOne( { x: 1 } )
+db.myNewCollection3.createIndex( { y: 1 } )
+
+db.getCollectionInfos()
+db.getCollectionNames()
+
+create view
+
+db.createCollection(
+  "<viewName>",
+  {
+    "viewOn" : "<source>",
+    "pipeline" : [<pipeline>],
+    "collation" : { <collation> }
+  }
+)
+
+OR
+
+db.createView(
+  "<viewName>",
+  "<source>",
+  [<pipeline>],
+  {
+    "collation" : { <collation> }
+  }
+)
+
+Operations of view
+
+db.collection.find()
+db.collection.findOne()
+db.collection.aggregate()
+db.collection.countDocuments()
+db.collection.estimatedDocumentCount()
+db.collection.count()
+db.collection.distinct()
+
+Drop View
+
+db.collection.drop()
